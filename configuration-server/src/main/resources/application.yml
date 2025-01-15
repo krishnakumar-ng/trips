@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: CONFIGURATION-SERVER
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/krishnakumar-ng/trips-configuration.git
+          cloud-on-start: true
+
+server:
+  port: 9271

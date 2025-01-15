@@ -1,0 +1,34 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: BOOKING-SERVICE
+
+  config:
+    import: configserver:http://localhost:9271
+
+  h2:
+    console.enabled: true
+
+  datasource:
+    url: jdbc:h2:file:~/data/booking_service
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/trips
+#    username: root
+#    password: root
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    advertised:
+      host:
+        name: localhost

@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+
+  config:
+    import: configserver:http://localhost:9271
+
+  application:
+    name: API-GATEWAY
+
+  cloud:
+    gateway:
+      discovery:
+        location:
+          enable: true
+      routes:
+        - id: BOOKING-SERVICE
+          uri: lb://BOOKING-SERVICE
+#          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/booking-service/**
+
+        - id: BUS-SERVICE
+          uri: lb://BUS-SERVICE
+#          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/bus-service/**
+
+        - id: PAYMENT-SERVICE
+          uri: lb://PAYMENT-SERVICE
+#          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/payment-service/**
+
+        - id: MAIL-SERVICE
+          uri: lb://MAIL-SERVICE
+#          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/mail-service/**
+
+managements:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

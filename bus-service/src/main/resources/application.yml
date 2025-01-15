@@ -1,0 +1,30 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: BUS-SERVICE
+
+  config:
+    import: configserver:http://localhost:9271
+
+  h2:
+    console.enabled: true
+
+  datasource:
+    #    url: jdbc:h2:mem:mydb
+    url: jdbc:h2:file:~/data/bus_service
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+
+#springdoc:
+#  api-docs:
+#    path: /bus-service
