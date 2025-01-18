@@ -43,7 +43,7 @@ public interface BusResource {
     )
     @Operation(method = "PATCH", summary = "Update Bus Availability")
     @PatchMapping("/{busId}/availability")
-    ResponseEntity<BusDetailsDto> updateBusSeatsAvailability(
+    ResponseEntity<BusDetailsDto> updateBusAvailability(
             @Parameter(name = "busId", description = "bus id")
             @Schema(description = "Reference", example = "KPN Travels - TN 05 A 1234")
             @PathVariable(name = "busId") String busId,

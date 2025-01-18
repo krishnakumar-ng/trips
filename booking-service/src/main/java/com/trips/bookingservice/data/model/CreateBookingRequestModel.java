@@ -19,7 +19,7 @@ public class CreateBookingRequestModel {
     @Schema(description = "bus id", example = "room_kjansdf8u3wk976", requiredMode = Schema.RequiredMode.REQUIRED)
     private String busId;
 
-    @Schema(description = "boarding-date", example = "2023-12-24T06:21:38.699Z", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "boarding-date", example = "2023-12-24", requiredMode = Schema.RequiredMode.REQUIRED)
     private String boardingDate;
 
     @Schema(description = "user id", example = "901237412412", requiredMode = Schema.RequiredMode.REQUIRED)

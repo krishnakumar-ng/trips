@@ -21,10 +21,10 @@ public class BookingMapper {
         BookingResponseModel bookingResponseModel = new BookingResponseModel();
         bookingResponseModel.setPaymentType(PaymentType.ONLINE_PAYMENT);
         bookingResponseModel.setId(bookingEntity.getId());
-        bookingResponseModel.setPaymentOrderId(paymentResponse.getId());
+//        bookingResponseModel.setPaymentOrderId(paymentResponse.getId());
         bookingResponseModel.setStatus(bookingEntity.getStatus());
-        bookingResponseModel.setAmount(new BigDecimal(paymentResponse.getAmount()));
-        bookingResponseModel.setPaymentUrl(paymentResponse.getUrl());
+//        bookingResponseModel.setAmount(new BigDecimal(paymentResponse.getAmount()));
+//        bookingResponseModel.setPaymentUrl(paymentResponse.getUrl());
         return bookingResponseModel;
     }
 

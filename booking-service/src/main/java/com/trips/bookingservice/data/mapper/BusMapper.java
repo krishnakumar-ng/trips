@@ -17,22 +17,22 @@ public class BusMapper {
         BusMetaDataModel busMetaDataModel = new BusMetaDataModel();
         busMetaDataModel.setId(busDetails.getBusId());
         busMetaDataModel.setBusName(busDetails.getBusName());
-        busMetaDataModel.setOperatorId(busDetails.getOperatorId());
+        busMetaDataModel.setOperatorId(busDetails.getOperator().getOperatorName());
         busMetaDataModel.setPrice(toBusPriceMetaDataModel(busDetails));
         return busMetaDataModel;
     }
 
     private BusPriceMetaDataModel toBusPriceMetaDataModel(BusDetailsDto busDetails) {
         BusPriceMetaDataModel busPriceMetaDataModel = new BusPriceMetaDataModel();
-        busPriceMetaDataModel.setPrice(busDetails.getPrice().getPrice());
-        busPriceMetaDataModel.setCurrency(busDetails.getPrice().getCurrency());
+        busPriceMetaDataModel.setPrice(getBusPrice(busDetails));
+        busPriceMetaDataModel.setCurrency("INR");
         return busPriceMetaDataModel;
     }
 
     public String toAmount(BusDetailsDto busDetails) {
         BigDecimal amount = new BigDecimal(0);
-        BusPricesDto busPrices = busDetails.getPrice();
-        amount = amount.add(busPrices.getPrice());
+        BigDecimal busPrice = getBusPrice(busDetails);
+        amount = amount.add(busPrice);
         return amount.toPlainString();
     }
 
@@ -43,5 +43,18 @@ public class BusMapper {
                 .currency(currency)
                 .stripePaymentServiceProviderModel(stripePaymentServiceProviderModel)
                 .build();
+    }
+
+    public BigDecimal getBusPrice(BusDetailsDto busDetails) {
+
+        // Currently price of the first schedule is picked
+        // (need to adjust this based on your logic)
+        if (busDetails.getRoutes() != null && !busDetails.getRoutes().isEmpty()
+                && busDetails.getRoutes().getFirst().getSchedules() != null
+                && !busDetails.getRoutes().getFirst().getSchedules().isEmpty()) {
+            return busDetails.getRoutes().getFirst().getSchedules().getFirst().getPrice();
+        }
+
+        return null; // Or throw an exception if price is not available
     }
 }

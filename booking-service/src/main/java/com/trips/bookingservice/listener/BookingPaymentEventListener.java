@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 public class BookingPaymentEventListener {
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
     @KafkaListener(topics = "booking.payment")
     public void listen(final String payload) {

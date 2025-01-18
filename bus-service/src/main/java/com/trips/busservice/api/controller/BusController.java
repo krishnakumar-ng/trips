@@ -20,36 +20,54 @@ public class BusController implements BusResource {
 
     @Override
     public ResponseEntity<BusDetailsDto> addBus(BusDetailsDto busDetailsDto) {
-        return new ResponseEntity<>(busService.addBus(busDetailsDto), HttpStatus.CREATED);
+        log.info("Adding bus : {}", busDetailsDto);
+        BusDetailsDto savedBus = busService.addBus(busDetailsDto);
+        log.info("Added bus with id: {}", savedBus.getBusId());
+        return new ResponseEntity<>(savedBus, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<BusDetailsDto> updateBusSeatsAvailability(String busId, boolean isAvailable, String date) {
-        return new ResponseEntity<>(busService.updateAvailability(busId, isAvailable, date), HttpStatus.OK);
+    public ResponseEntity<BusDetailsDto> updateBusAvailability(String busId, boolean isAvailable, String date) {
+        log.info("Updating bus seats availability for busId : {}", busId);
+        BusDetailsDto savedBus = busService.updateAvailability(busId, isAvailable, date);
+        log.info("Updated bus seats availability to {} for busId: {}", isAvailable, savedBus.getBusId());
+        return new ResponseEntity<>(savedBus, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<BusDetailsDto> updateBusSeatsAvailability(String busId, int seats, String dateString) {
-        return new ResponseEntity<>(busService.updateSeats(busId, seats, dateString), HttpStatus.OK);
+        log.info("Updating bus seats for busId : {}", busId);
+        BusDetailsDto savedBus = busService.updateSeats(busId, seats, dateString);
+        log.info("Updated bus seats for busId: {}", savedBus.getBusId());
+        return new ResponseEntity<>(savedBus, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<BusDetailsDto> updateBusDetails(String busId, @Valid BusDetailsDto busDetailsDto) {
-        return new ResponseEntity<>(busService.updateBusDetails(busId, busDetailsDto), HttpStatus.OK);
+        log.info("Updating bus details for busId : {}", busId);
+        BusDetailsDto savedBus = busService.updateBusDetails(busId, busDetailsDto);
+        log.info("Updated bus details : {} for busId: {}", savedBus, savedBus.getBusId());
+        return new ResponseEntity<>(savedBus, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<BusDetailsDto>> getAllBuses() {
-        return new ResponseEntity<>(busService.getAllBuses(), HttpStatus.OK);
+        log.info("Getting all the buses from the table.");
+        List<BusDetailsDto> savedBusList = busService.getAllBuses();
+        return new ResponseEntity<>(savedBusList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<BusDetailsDto> getBusById(String busId) {
-        return new ResponseEntity<>(busService.getBusById(busId), HttpStatus.OK);
+        log.info("Getting buses details for busId : {}",busId);
+        BusDetailsDto savedBus = busService.getBusById(busId);
+        return new ResponseEntity<>(savedBus, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<BusDetailsDto>> getBusByLocationAndDate(String from, String to, String date) {
-        return new ResponseEntity<>(busService.getBusByLocationAndDate(from, to, date), HttpStatus.OK);
+        log.info("Getting all the buses for start location: {} and destinationLocation : {} with date: {}",from,to,date);
+        List<BusDetailsDto> savedBusList = busService.getBusByLocationAndDate(from, to, date);
+        return new ResponseEntity<>(savedBusList, HttpStatus.OK);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -27,14 +28,11 @@ public class BookingEntity {
     @CustomBookingIdGenerator
     private String id;
 
-    @Column(name = "booking_request_id", nullable = false)
-    private String bookingRequestId;
-
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
     @Column(name = "boarding_date", nullable = false)
-    private ZonedDateTime boardingDate;
+    private LocalDate boardingDate;
 
     @Column(name = "bus_details", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
@@ -50,9 +48,6 @@ public class BookingEntity {
     @Column(name = "passengers", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
     private List<PassengerDetailsDto> passengerDetailsList;
-
-    @Column(name = "operator_id", nullable = false)
-    private String operatorId;
 
     @Column(name = "payment_type")
     @Enumerated(EnumType.STRING)

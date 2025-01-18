@@ -68,8 +68,8 @@ public class BusServiceImpl implements BusService {
         BusDetailsDto busDetails;
 
         // Construct URL
-        String roomServiceUri = eurekaClientUtil.getServiceUri(busServiceId);
-        String url = roomServiceUri + busServiceV1 + "/" + busId;
+        String busServiceUri = eurekaClientUtil.getServiceUri(busServiceId);
+        String url = busServiceUri + busServiceV1 + "/" + busId;
 
         try {
             BusDetailsDto response = busServiceClient.getBusById(busId).getBody();

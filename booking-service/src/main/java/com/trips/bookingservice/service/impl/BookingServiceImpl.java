@@ -23,6 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -52,7 +53,8 @@ public class BookingServiceImpl implements BookingService {
             switch (type) {
                 case ONLINE_PAYMENT -> {
                     log.info("Redirecting to {} for payment as the payment type is: {}", type, type);
-                    PaymentResponseDto onlinePaymentOrderResponseDto = doOnlinePayment(bookingEntity);
+//                    PaymentResponseDto onlinePaymentOrderResponseDto = doOnlinePayment(bookingEntity);
+                    PaymentResponseDto onlinePaymentOrderResponseDto = PaymentResponseDto.builder().build();
                     bookingResponseModel = bookingMapper.toBookingResponseModel(onlinePaymentOrderResponseDto, bookingEntity);
                 }
                 case CASH_PAYMENT -> {
@@ -218,7 +220,7 @@ public class BookingServiceImpl implements BookingService {
 
     private BookingEntity updateBookingData(BookingEntity bookingEntity, UpdateBookingRequestModel updateBookingRequestModel) {
         log.info("Updating booking data to : {}", updateBookingRequestModel);
-        bookingEntity.setBoardingDate(ZonedDateTime.parse(updateBookingRequestModel.getBoardingDate()));
+        bookingEntity.setBoardingDate(LocalDate.parse(updateBookingRequestModel.getBoardingDate()));
         return bookingEntity;
     }
 
@@ -317,7 +319,7 @@ public class BookingServiceImpl implements BookingService {
                                                BookingStatus status,
                                                ZonedDateTime bookingDate) {
         BookingEntity bookingEntity = new BookingEntity();
-        bookingEntity.setBoardingDate(ZonedDateTime.parse(createBookingRequestModel.getBoardingDate()));
+        bookingEntity.setBoardingDate(LocalDate.parse(createBookingRequestModel.getBoardingDate()));
         bookingEntity.setPassengerDetailsList(createBookingRequestModel.getPassengerDetailsList());
         bookingEntity.setContactDetails(createBookingRequestModel.getContactDetails());
         bookingEntity.setPaymentType(createBookingRequestModel.getPaymentType());

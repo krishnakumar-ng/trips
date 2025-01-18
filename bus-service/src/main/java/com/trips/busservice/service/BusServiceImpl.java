@@ -63,6 +63,7 @@ public class BusServiceImpl implements BusService {
                 }
             }
         }
+        log.info("Saved bus entity to the db");
         return busMapper.toBusDetailsDto(savedBusEntity);
     }
 

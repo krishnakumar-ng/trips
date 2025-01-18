@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class EurekaClientUtil {
-    private DiscoveryClient discoveryClient;
+    private final DiscoveryClient discoveryClient;
 
     public List<ServiceInstance> getServiceInstances(String serviceName) {
         return discoveryClient.getInstances(serviceName);

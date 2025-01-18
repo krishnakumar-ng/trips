@@ -17,7 +17,7 @@ public class UpdateBookingRequestModel {
     @Schema(description = "booking request id",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String bookingRequestId;
 
-    @Schema(description = "boarding-date", example = "2023-12-24T06:21:38.699Z")
+    @Schema(description = "boarding-date", example = "2023-12-24")
     private String boardingDate;
 
     @Schema(description = "passengers")
