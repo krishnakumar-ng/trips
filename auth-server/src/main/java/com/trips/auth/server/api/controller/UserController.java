@@ -15,8 +15,8 @@ public class UserController implements UserResource {
     private final UserService userService;
 
     @Override
-    public ResponseEntity<UserResponseModel> getUserDetails(String token, String userName) {
-        UserResponseModel user = userService.getUserByName(userName);
+    public ResponseEntity<UserResponseModel> getUserDetails(String token, String username) {
+        UserResponseModel user = userService.getUserByName(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -27,8 +27,8 @@ public class UserController implements UserResource {
     }
 
     @Override
-    public ResponseEntity<UserResponseModel> updateUserRoles(String token, String userName, String roles) {
-        UserResponseModel user = userService.updateUserRoles(userName,roles);
+    public ResponseEntity<UserResponseModel> updateUserRoles(String token, String username, String roles) {
+        UserResponseModel user = userService.updateUserRoles(username,roles);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
 }

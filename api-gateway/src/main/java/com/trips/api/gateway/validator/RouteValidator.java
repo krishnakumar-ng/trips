@@ -10,14 +10,14 @@ import java.util.function.Predicate;
 @Component
 public class RouteValidator {
     public static final List<String> openApiEndpoints = List.of(
-            "/auth/api/v1/verifyToken",
-            "/api/v1/auth/users"
+            "/auth/api/v1/verify-token",
+            "/auth/api/v1/users"
     );
 
     public Predicate<ServerHttpRequest> isSecured = serverHttpRequest -> {
         String path = serverHttpRequest.getURI().getPath();
 
-        if (path.startsWith("/api/v1/room-service") || path.startsWith("/api/v1/booking-service") || path.startsWith("/api/v1/review-service")
+        if (path.startsWith("/api/v1/bus-service") || path.startsWith("/api/v1/booking-service")
                 && serverHttpRequest.getMethod() == HttpMethod.GET) {
             return false;
         }

@@ -1,19 +1,17 @@
 package com.trips.auth.server.data.mapper;
 
-import com.trips.auth.server.data.entity.User;
+import com.trips.auth.server.data.entity.UserEntity;
 import com.trips.auth.server.data.models.UserResponseModel;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
 @Component
 public class UserMapper {
-    public UserResponseModel toUserResponseModel(User user) {
+    public UserResponseModel toUserResponseModel(UserEntity userEntity) {
         return UserResponseModel.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRoles())
+                .id(userEntity.getId())
+                .username(userEntity.getUsername())
+                .password(userEntity.getPassword())
+                .roles(userEntity.getRoles())
                 .build();
     }
 }

@@ -18,21 +18,13 @@ public class ApiConstants {
     public static final String ROLES_ENDPOINT =  "/roles";
 
     //API Headers
-
     public static final String AUTHORIZATION =  "Authorization";
-
-
 
     // API error code
     public static final String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
     public static final String UNAUTHORIZED = "UNAUTHORIZED";
     public static final String BAD_REQUEST = "BAD_REQUEST";
     public static final String NOT_FOUND = "NOT_FOUND";
-    public static final String INVALID_BOOKING_REQUEST_DATA = "MESSAGE_INVALID_BOOKING_REQUEST_DATA";
-    public static final String INVALID_PAYMENT_TYPE = "INVALID_PAYMENT_METHOD_TYPE";
-    public static final String INVALID_PAYMENT_METHOD_TYPE = "INVALID_PAYMENT_METHOD_TYPE";
-    public static final String INVALID_BOOKING_REQUEST_ID = "INVALID_BOOKING_REQUEST_ID";
-    public static final String ROOM_UNAVAILABLE = "ROOM_UNAVAILABLE";
 
 
     public static final String MESSAGE_SUCCESS = "Success";

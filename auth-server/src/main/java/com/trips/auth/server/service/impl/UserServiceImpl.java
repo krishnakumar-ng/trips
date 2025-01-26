@@ -1,7 +1,7 @@
 package com.trips.auth.server.service.impl;
 
-import com.trips.auth.server.constants.Role;
-import com.trips.auth.server.data.entity.User;
+import com.trips.auth.server.constants.enums.Role;
+import com.trips.auth.server.data.entity.UserEntity;
 import com.trips.auth.server.data.mapper.UserMapper;
 import com.trips.auth.server.data.models.UserResponseModel;
 import com.trips.auth.server.repository.UserRepository;
@@ -25,11 +25,11 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserResponseModel getUserByName(String userName) {
-        Optional<User> userOptional = userRepository.findByUsername(userName);
+    public UserResponseModel getUserByName(String username) {
+        Optional<UserEntity> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return userMapper.toUserResponseModel(user);
+            UserEntity userEntity = userOptional.get();
+            return userMapper.toUserResponseModel(userEntity);
         } else {
             throw new UsernameNotFoundException("User don't exist");
         }
@@ -38,28 +38,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseModel updateUserPassword(String username, String password) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        Optional<UserEntity> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setPassword(password);
-            User savedUser = userRepository.save(user);
-            return userMapper.toUserResponseModel(savedUser);
+            UserEntity userEntity = userOptional.get();
+            userEntity.setPassword(password);
+            UserEntity savedUserEntity = userRepository.save(userEntity);
+            return userMapper.toUserResponseModel(savedUserEntity);
         } else {
             throw new UsernameNotFoundException("User don't exist");
         }
     }
 
     @Override
-    public UserResponseModel updateUserRoles(String userName, String rolesString) {
-        Optional<User> userOptional = userRepository.findByUsername(userName);
+    public UserResponseModel updateUserRoles(String username, String rolesString) {
+        Optional<UserEntity> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
-            User user = userOptional.get();
+            UserEntity userEntity = userOptional.get();
             Set<Role> roles = Arrays.stream(rolesString.split(","))
                     .map(Role::valueOf)
                     .collect(Collectors.toSet());
-            user.setRoles(roles);
-            User savedUser = userRepository.save(user);
-            return userMapper.toUserResponseModel(savedUser);
+            userEntity.setRoles(roles);
+            UserEntity savedUserEntity = userRepository.save(userEntity);
+            return userMapper.toUserResponseModel(savedUserEntity);
         } else {
             throw new UsernameNotFoundException("User don't exist");
         }

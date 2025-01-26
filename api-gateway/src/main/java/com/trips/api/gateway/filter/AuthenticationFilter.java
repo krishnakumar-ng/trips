@@ -1,12 +1,14 @@
 package com.trips.api.gateway.filter;
 
-import com.trips.api.gateway.data.dto.AuthTokenResponseDto;
+import com.trips.api.gateway.data.dto.VerifyTokenResponseDto;
 import com.trips.api.gateway.exception.AuthorizationException;
 import com.trips.api.gateway.exception.MissingAuthTokenException;
+import com.trips.api.gateway.feign.client.AuthClient;
 import com.trips.api.gateway.util.EurekaClientUtil;
 import com.trips.api.gateway.validator.RouteValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -22,15 +24,22 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
-    private final WebClient client;
-    private final RouteValidator routeValidator;
-    private final EurekaClientUtil eurekaClientUtil;
+    @Autowired
+    private WebClient client;
+    @Autowired
+    private RouteValidator routeValidator;
+    @Autowired
+    private EurekaClientUtil eurekaClientUtil;
+//    @Autowired
+//    private AuthClient authClient;
+
+    public AuthenticationFilter(){
+        super(Config.class);
+    }
 
     @Value("${services.auth-service.id}")
     String authServiceID;
@@ -55,8 +64,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                             return chain.filter(exchange);
                         }).onErrorResume(exception -> {
                             ServerHttpResponse httpResponse = exchange.getResponse();
-                            if (exception instanceof WebClientResponseException) {
-                                WebClientResponseException webClientResponseException = (WebClientResponseException) exception;
+                            if (exception instanceof WebClientResponseException webClientResponseException) {
                                 // get the error json response
                                 String errorJson = webClientResponseException.getResponseBodyAsString();
                                 log.info("errorJson is: {}", errorJson);
@@ -91,22 +99,34 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         return authHeader;
     }
 
-    private Mono<AuthTokenResponseDto> verifyToken(final String bearerToken) {
+    private Mono<VerifyTokenResponseDto> verifyToken(String bearerToken) {
         log.info("Calling auth-service Service for verifying the token: {}", bearerToken);
+
+//        VerifyTokenResponseDto verifyTokenResponse = authClient.verifyToken(bearerToken).getBody();
+//
+//        return Mono.just(verifyTokenResponse);
 
         // Construct URL
         String organizationServiceURI = eurekaClientUtil.getServiceUri(authServiceID);
-        String url = organizationServiceURI + authServiceV1 + "/verifyToken";
+        String url = organizationServiceURI + authServiceV1 + "/verify-token";
 
         return client.post()
                 .uri(url)
                 .header("Authorization", bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(AuthTokenResponseDto.class);
+                .bodyToMono(VerifyTokenResponseDto.class);
     }
 
     public static class Config {
+        private String value;
 
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 }

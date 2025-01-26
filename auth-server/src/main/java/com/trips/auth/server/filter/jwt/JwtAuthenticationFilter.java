@@ -1,8 +1,7 @@
-package com.trips.auth.server.api.security;
+package com.trips.auth.server.filter.jwt;
 
-import com.trips.auth.server.constants.ApiConstants;
 import com.trips.auth.server.service.JwtService;
-import com.trips.auth.server.service.MyUserDetailsService;
+import com.trips.auth.server.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,23 +16,25 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.trips.auth.server.constants.ApiConstants.AUTHORIZATION;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final MyUserDetailsService myUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader(ApiConstants.AUTHORIZATION);
+        String token = request.getHeader(AUTHORIZATION);
 
         if (token != null && token.startsWith("Bearer")) {
 
             token = token.substring(7);
             String username = jwtService.extractUserName(token);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
                 if (jwtService.isValidToken(token)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                             null, userDetails.getAuthorities());

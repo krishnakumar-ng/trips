@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthTokenResponseDto {
+public class VerifyTokenResponseDto {
     private String status;
     private String message;
 }

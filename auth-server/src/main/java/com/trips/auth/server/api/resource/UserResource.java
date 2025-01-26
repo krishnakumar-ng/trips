@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.trips.auth.server.constants.ApiConstants.AUTHORIZATION;
+
 @Tag(name = "user-controller-resource")
 @RequestMapping("/user")
 public interface UserResource {
@@ -21,9 +23,9 @@ public interface UserResource {
             }
     )
     @Operation(method = "POST", summary = "Get User Details")
-    @GetMapping("/{userName}")
+    @GetMapping("/{username}")
     public ResponseEntity<UserResponseModel> getUserDetails(@RequestHeader("Authorization") String token,
-                                                            @PathVariable("userName") String userName);
+                                                            @PathVariable("username") String username);
 
     @ApiResponses(
             value = {
@@ -33,8 +35,8 @@ public interface UserResource {
             }
     )
     @Operation(method = "PATCH", summary = "Update User Password")
-    @PatchMapping("/{userName}/update/password")
-    public ResponseEntity<UserResponseModel> updateUserPassword(@RequestHeader("Authorization") String token,
+    @PatchMapping("/{username}/update/password")
+    public ResponseEntity<UserResponseModel> updateUserPassword(@RequestHeader(AUTHORIZATION) String token,
                                                                @PathVariable("username") String username,
                                                                @RequestParam("password") String password);
 
@@ -47,9 +49,9 @@ public interface UserResource {
             }
     )
     @Operation(method = "POST", summary = "Update User Roles")
-    @PatchMapping("/{userName}/update/roles")
+    @PatchMapping("/{username}/update/roles")
     public ResponseEntity<UserResponseModel> updateUserRoles(@RequestHeader("Authorization") String token,
-                                                            @PathVariable("userName") String userName,
+                                                            @PathVariable("username") String username,
                                                             @RequestParam("roles") String roles);
 
 }

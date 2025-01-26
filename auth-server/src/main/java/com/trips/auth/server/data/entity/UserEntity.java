@@ -1,6 +1,6 @@
 package com.trips.auth.server.data.entity;
 
-import com.trips.auth.server.constants.Role;
+import com.trips.auth.server.constants.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

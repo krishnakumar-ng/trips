@@ -1,6 +1,6 @@
 package com.trips.auth.server.data.models;
 
-import com.trips.auth.server.constants.Role;
+import com.trips.auth.server.constants.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

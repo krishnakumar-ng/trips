@@ -1,13 +1,17 @@
 package com.trips.auth.server.service;
 
-import com.trips.auth.server.constants.Role;
-import com.trips.auth.server.data.entity.User;
+import com.trips.auth.server.constants.enums.Role;
+import com.trips.auth.server.data.entity.UserEntity;
+import com.trips.auth.server.exception.AuthServiceInvalidTokenException;
 import com.trips.auth.server.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +29,7 @@ public class JwtService {
     private final SecretKey secretKey;
     private final String secretKeyString;
 
-    private final int expirationTime = 7199000;
+    private static final int expirationTime = 7199000;
 
     public JwtService() {
         try {
@@ -44,27 +48,30 @@ public class JwtService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SecurityService securityService;
+
     /**
-     * @param userName - username
+     * @param username - username
      * @return Bearer token for the given user
      */
-    public String generateToken(String userName) {
-        Optional<User> userEntity = userRepository.findByUsername(userName);
+    public String generateToken(String username) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
 
-        User user;
+        UserEntity user;
         Set<Role> roles;
         if (userEntity.isPresent()) {
             user = userEntity.get();
             roles = user.getRoles();
         } else {
-            throw new UsernameNotFoundException(userName + " - user is not exist.");
+            throw new UsernameNotFoundException(username + " - user is not exist.");
         }
 
         Date issueDate = new Date();
 
         //Add roles to the token
         return Jwts.builder()
-                .subject(userName)
+                .subject(username)
                 .claim("roles", roles.stream()
                         .map(Role::name).collect(Collectors.joining(",")))
                 .issuedAt(issueDate)
@@ -141,4 +148,12 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public void verifyToken(HttpServletRequest request){
+        String bearerToken = securityService.getBearerToken(request);
+        try {
+            isValidToken(bearerToken);
+        } catch (Exception e) {
+            throw new AuthServiceInvalidTokenException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
 }
